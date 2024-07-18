@@ -8,10 +8,6 @@
 #include "soc/rtc_cntl_reg.h" //disable brownout problems
 #include "driver/gpio.h"
 
-#include <SPI.h>
-#include "LCD_Driver.h"
-#include "GUI_Paint.h"
-#include "image.h" // store a image
 
 // configuration for AI Thinker Camera board
 #define PWDN_GPIO_NUM     32
@@ -33,10 +29,10 @@
 
 
 
-const char* ssid     = "J"; // CHANGE HERE
-const char* password = "12345689"; // CHANGE HERE
+const char* ssid     = "network-name"; // CHANGE HERE
+const char* password = "network-password"; // CHANGE HERE
 
-const char* websockets_server_host = "172.20.10.3"; //CHANGE HERE
+const char* websockets_server_host = "192.168.1.149"; //CHANGE HERE
 const uint16_t websockets_server_port = 3001; // OPTIONAL CHANGE
 
 camera_fb_t * fb = NULL;
@@ -47,14 +43,14 @@ uint8_t state = 0;
 using namespace websockets;
 WebsocketsClient client;
 
-void onMessageCallback(WebsocketsMessage message) {  //當接收到 Websocket 訊息時會被調用
+void onMessageCallback(WebsocketsMessage message) {
   Serial.print("Got Message: ");
   Serial.println(message.data());
 }
 
-esp_err_t init_camera() {  //定義了一個初始化攝像頭的函數 init_camera，返回類型是 esp_err_t，表示錯誤代碼。
-  camera_config_t config; //用於儲存攝像頭配置
-  config.ledc_channel = LEDC_CHANNEL_0; 
+esp_err_t init_camera() {
+  camera_config_t config;
+  config.ledc_channel = LEDC_CHANNEL_0;
   config.ledc_timer = LEDC_TIMER_0;
   config.pin_d0 = Y2_GPIO_NUM;
   config.pin_d1 = Y3_GPIO_NUM;
@@ -127,31 +123,19 @@ void setup() {
 
   Serial.begin(115200);
   Serial.setDebugOutput(true);
-  // cam init & connect wifi
-  init_camera(); 
-  init_wifi(); 
-  // LCD init
-  Config_Init();
-  LCD_Init();
-  LCD_Clear(WHITE);
-  LCD_SetBacklight(100);
-  Paint_NewImage(LCD_WIDTH, LCD_HEIGHT, 0, WHITE);
-  Paint_Clear(WHITE);
-  Paint_SetRotate(0);
-  Paint_DrawImage(gImage_70X70, 160, 60, 70, 70); 
+
+  init_camera();
+  init_wifi();
 }
 
 void loop() {
-  if (client.available()) { 
-    camera_fb_t *fb = esp_camera_fb_get(); // take pic
+  if (client.available()) {
+    camera_fb_t *fb = esp_camera_fb_get();
     if (!fb) {
       Serial.println("img capture failed");
       esp_camera_fb_return(fb);
       ESP.restart();
     }
-    // ! show on LCD 
-    Paint_DrawImage(fb->buf, 0, 0, 180, 135);
-    // send to server
     client.sendBinary((const char*) fb->buf, fb->len);
     Serial.println("image sent");
     esp_camera_fb_return(fb);
