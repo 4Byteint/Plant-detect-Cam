@@ -161,10 +161,11 @@ void loop() {
     UWORD Color_Background = BLACK;
     UWORD Color_Foreground = WHITE;
     // if it's healthy
-    Paint_DrawString_EN(Xstart, Ystart, pString_Healthy, Font, Color_Background, Color_Foreground);
+    if(leafStatus == 0x01)
+      Paint_DrawString_EN(Xstart, Ystart, pString_Healthy, Font, Color_Background, Color_Foreground);
     // if it's unhealthy, show unhealthy & disease
-    Paint_DrawString_EN(Xstart, Ystart, pString_UnHealthy, Font, Color_Background, Color_Foreground);
-
+    if(leafStatus == 0x03)
+      Paint_DrawString_EN(Xstart, Ystart, pString_UnHealthy, Font, Color_Background, Color_Foreground);
     // send to server
     client.sendBinary((const char*) fb->buf, fb->len);
     Serial.println("image sent");
