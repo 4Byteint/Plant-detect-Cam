@@ -416,10 +416,11 @@ void Paint_DrawChar(UWORD Xpoint, UWORD Ypoint, const char Acsii_Char,
 
   for ( Page = 0; Page < Font->Height; Page ++ ) {
     for ( Column = 0; Column < Font->Width; Column ++ ) {
-
+      // 檢查字元位圖中的每個像素
       //To determine whether the font background color and screen background color is consistent
       if (FONT_BACKGROUND == Color_Background) { //this process is to speed up the scan
         if (pgm_read_byte(ptr) & (0x80 >> (Column % 8)))
+        // 如果是前景色部分，設置像素為前景顏色
           Paint_SetPixel (Xpoint + Column, Ypoint + Page, Color_Foreground );
       } else {
         if (pgm_read_byte(ptr) & (0x80 >> (Column % 8))) {

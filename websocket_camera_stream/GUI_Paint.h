@@ -101,11 +101,13 @@ typedef enum {
 #define LGRAY         0XC618 
 #define LGRAYBLUE     0XA651
 #define LBBLUE        0X2B12 
-
+#define TRANSPARENT   0x1234 
 
 #define IMAGE_BACKGROUND    WHITE
 #define FONT_FOREGROUND     BLACK
 #define FONT_BACKGROUND     WHITE
+
+
 
 /**
  * The size of the point
