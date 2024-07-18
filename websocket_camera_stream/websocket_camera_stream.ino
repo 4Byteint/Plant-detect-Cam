@@ -47,7 +47,7 @@ uint8_t state = 0;
 using namespace websockets;
 WebsocketsClient client;
 
-void onMessageCallback(WebsocketsMessage message) {  //當接收到 Websocket 訊息時會被調用
+void onMessageCallback(WebsocketsMessage message) {
   Serial.print("Got Message: ");
   Serial.println(message.data());
 }
@@ -162,16 +162,21 @@ void loop() {
     UWORD Color_Background = BLACK;
     UWORD Color_Foreground = WHITE;
     // if it's healthy
-    if(leafStatus == 0x01)
-      Paint_DrawString_EN(Xstart, Ystart, pString_Healthy, Font, Color_Background, Color_Foreground);
-    // if it's unhealthy, show unhealthy & disease
-    elif(leafStatus == 0x03)
-      Paint_DrawString_EN(Xstart, Ystart, pString_UnHealthy, Font, Color_Background, Color_Foreground);
-    else
-      Paint_DrawString_EN(Xstart, Ystart, pString_UnDetect, Font, Color_Background, Color_Foreground);
+    // if(leafStatus == 0x01)
+    //   Paint_DrawString_EN(Xstart, Ystart, pString_Healthy, Font, Color_Background, Color_Foreground);
+    // // if it's unhealthy, show unhealthy & disease
+    // elif(leafStatus == 0x03)
+    //   Paint_DrawString_EN(Xstart, Ystart, pString_UnHealthy, Font, Color_Background, Color_Foreground);
+    // else
+    //   Paint_DrawString_EN(Xstart, Ystart, pString_UnDetect, Font, Color_Background, Color_Foreground);
     // send to server
     client.sendBinary((const char*) fb->buf, fb->len);
     Serial.println("image sent");
+
+    // Connect to WebSocket server
+    // client.begin(server, port, "/");
+    // client.onMessage(onMessageCallback);
+
     esp_camera_fb_return(fb);
     client.poll();
   }
