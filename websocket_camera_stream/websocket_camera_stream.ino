@@ -149,8 +149,22 @@ void loop() {
       esp_camera_fb_return(fb);
       ESP.restart();
     }
-    // ! show on LCD 
+
+    // show on LCD 
     Paint_DrawImage(fb->buf, 0, 0, 180, 135);
+    // 在圖片上疊加顯示 "healthy" 
+    UWORD Xstart = 10; 
+    UWORD Ystart = 10; 
+    const char* pString_Healthy = "healthy"; 
+    const char* pString_UnHealthy = "Unhealthy, disease:___";
+    sFONT* Font = &Font16;
+    UWORD Color_Background = BLACK;
+    UWORD Color_Foreground = WHITE;
+    // if it's healthy
+    Paint_DrawString_EN(Xstart, Ystart, pString_Healthy, Font, Color_Background, Color_Foreground);
+    // if it's unhealthy, show unhealthy & disease
+    Paint_DrawString_EN(Xstart, Ystart, pString_UnHealthy, Font, Color_Background, Color_Foreground);
+
     // send to server
     client.sendBinary((const char*) fb->buf, fb->len);
     Serial.println("image sent");
