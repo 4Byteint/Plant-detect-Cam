@@ -157,6 +157,7 @@ void loop() {
     UWORD Ystart = 10; 
     const char* pString_Healthy = "healthy"; 
     const char* pString_UnHealthy = "Unhealthy, disease:___";
+    const char* pString_UnDetect = "None";
     sFONT* Font = &Font16;
     UWORD Color_Background = BLACK;
     UWORD Color_Foreground = WHITE;
@@ -164,8 +165,10 @@ void loop() {
     if(leafStatus == 0x01)
       Paint_DrawString_EN(Xstart, Ystart, pString_Healthy, Font, Color_Background, Color_Foreground);
     // if it's unhealthy, show unhealthy & disease
-    if(leafStatus == 0x03)
+    elif(leafStatus == 0x03)
       Paint_DrawString_EN(Xstart, Ystart, pString_UnHealthy, Font, Color_Background, Color_Foreground);
+    else
+      Paint_DrawString_EN(Xstart, Ystart, pString_UnDetect, Font, Color_Background, Color_Foreground);
     // send to server
     client.sendBinary((const char*) fb->buf, fb->len);
     Serial.println("image sent");
