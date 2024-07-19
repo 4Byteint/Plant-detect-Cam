@@ -51,7 +51,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include <stdint.h>
-#include <avr/pgmspace.h>
+#include <pgmspace.h>
 //ASCII
 typedef struct _tFont
 {    
@@ -65,7 +65,7 @@ typedef struct _tFont
 //GB2312
 typedef struct                                          // 汉字字模数据结构
 {
-  unsigned char index[3];                               // 汉字内码索引
+  unsigned char index[4];                               // 汉字内码索引
   const char matrix[MAX_HEIGHT_FONT*MAX_WIDTH_FONT/8];  // 点阵码数据
 }CH_CN;
 

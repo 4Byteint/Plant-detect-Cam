@@ -36,8 +36,8 @@
 #include <stdio.h>
 #include <SPI.h>
 #include "Debug.h"
-#include <avr/pgmspace.h>
-
+#include <pgmspace.h>
+#include <Arduino.h>
 
 
 #define UBYTE   uint8_t
@@ -48,11 +48,15 @@
  * GPIO config
 **/
 // IO pin
-#define DEV_CS_PIN  15
-#define DEV_DC_PIN  4
-#define DEV_RST_PIN 2
-#define DEV_BL_PIN  3V3
-
+//#define DEV_MOSI_PIN  13
+//#define DEV_MISO_PIN  12 
+#define DEV_SCK_PIN   14
+#define DEV_CS_PIN    15
+#define DEV_DC_PIN    4
+#define DEV_RST_PIN   2
+#define DEV_BL_PIN    16  
+#define DEV_MOSI_PIN  13
+#define DEV_MISO_PIN  12// not use
 
 /**
  * GPIO read and write
